@@ -1,0 +1,20 @@
+1. SEGMENT PAMIĘCI DO TABLICY SERWERÓW
+Tablica serwerów jest współdzielonym przez procesy obszarem pamięci, w których przechowywane są identyfikatory serwerów oraz informacja o ich zajętości. Serwery wpisują swoje identyfikatory do tablicy serwerów, klienci uzyskują przydzielany im wolny serwer, a obserwatorzy mają możliwość wybrać, kogo chcą obserwować.
+
+2. TABLICA SEMAFORÓW TABLICY SERWERÓW
+Semafory tej tablicy zapewniają sunchronizację procesów w dostępie do tablicy serwerów. Semafory semser 0 i 1 zapewniają wzajemne wykluczanie serwerera z graczami, natomiast semafory semser 2 i 3 wykluczanie między serwerami i wykluczanie między graczami.
+
+3. SEGMENT SZACHOWNICY
+Współdzielony obszar pamięci, w którym przechowywana jest informacja o stanie szachownicy. Szachownica jest tablicą o długości 8*8*sizeof(int). Zawiera pola 0 - puste i pola 1 - pionki.
+
+4. SEGMENT PAMIĘCI DO LISTY KLIENTÓW
+Tablica zawierająca informacje o graczach. Każdy gracz posiada: login (liczbowy), kolor, poziom, zajętość i numer serwera.
+
+5. TABLICA SEMAFORÓW TABLICY KLIENTÓW
+Semafory tej tablicy zapewniają sunchronizację procesów w dostępie do tablicy klientów. Jest to semafor binarny. Proces opuszcza semafor, wykonuje działania na tablicy klientów, a na zakończenie semafor podnosi.
+
+6. GŁÓWNA TABLICA SEMAFORÓW
+Tablica 4 semaforów zapewniająca synchronizację zarówno serwer-klient, klient-klient, jak i serwer-serwer w dostępie do szachownicy.
+
+7. KOLEJKA KOMUNIKATÓW
+Tworzona przez gracza; zapewnia oczekiwanie na rozpoczęcie gry przez niesparowanych oczekujących graczy. Gracz oczekujący zawiesza się na kolejce, czekając aż otrzyma od partnera informację, że rozpoczyna się gra.

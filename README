@@ -1,0 +1,21 @@
+Przebieg ogsługi:
+
+1. Pierwszy uruchomić należy skrypt serwera. Serwery zapisują się do tablicy serwerów w segmencie pamięci współdzielonej.
+2. Następnie należy uruchomić skrypt gracza i wybrać opcję gry: obserwator lub grający (czarny wybiera, biały jest wybierany).
+2. Pierwsza powinna zostać wybrana opcja gracza oczekującego na wybranie.
+3. Jako druga wybierana jest opcja gracza wybierającego. (Ręczny wybór przeciwnika na podstawie identyfikatorów porządkowych na liście graczy oczekujących).
+4. Graczom przydzielany jest pierwszy wolny serwer z listy serwerów. (Gracz wybierający przypisuje graczowi wybranemu serwer).
+5. Gracze na zmianę wykonują ruchy. Istnieje możliwość wyświetlenia, w swojej kolejce, danych gracza bez utraty ruchu.
+6. Obserwator decyduje, kiedy chce zobaczyć aktualny stan szachownicy.
+7. Gracz może w swojej kolejce zakończyć grę.
+
+serwer.c:
+
+Serwer generuje losową wartość z zakresu <10000;99999>, która stanowi jego identyfikator wpisywany do tablicy serwerów. Inicjalizowane są także inne elementy niezbędne dla danej rozgrywki: tablica semaforów, szachownica i lista klientów. W nieskończonej pętli serwer zapewnia wzajemne wykluczanie serwera i klientów w dostępie do szachownicy.
+
+klient.c:
+
+Program inicjuje odpowiednie struktury: tablicę serwerów, listę graczy, tablice semaforów. Użytkownik wybiera tryb gry - obserwatora lub gracza. Obserwator wyświetla listę serwerów. Użytkownik wpisuje identyfikator porządkowy serwera na liście, który chce obserwować. Następnie tworzony jest segment pamięci do szachownicy. Obserwator może wybrać opcję zobaczenia aktualnego stanu szachownicy lub zakończyć obserwację.
+W trybie gracza użytkownik wprowadza numer gracza, jego kolor pionków (warunkujący pierwszeństwo) i ilość punków w rankingu. Następnie graczowi przydzielany jest serwer - wskazywany przez aktualny wskaźnik. Posiadając serwer, gracz przystępuje do wyboru przeciwnika z listy. Gracze niesparowani są wstrzymywani na kolejce komunikatów. Gracz posiada swój segment pamięci do szachownicy. W nieskończonej pętli klient ma możliwość wykonania ruchu (podanie 2 współrzędnych początkowych i 2 współrzędnych docelowych pionka), wyświetlenia danych o sobie i zakończenia gry.
+Zakłada się, że użytkownik korzystający z gry jest nieomylny.
+
